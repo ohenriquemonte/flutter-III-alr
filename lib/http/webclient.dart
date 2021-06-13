@@ -1,8 +1,13 @@
+import 'dart:convert';
+
+import 'package:bytebank/models/contact.dart';
+import 'package:bytebank/models/transaction.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 
 
-final String baseUrl = 'http://localhost:8080/';
+final String baseUrl = 'https://d23b6e76aca9.ngrok.io/';
+// final String baseUrl = 'http://localhost:8080/';
 
 class LoggingInterceptor implements InterceptorContract {
   @override
@@ -23,14 +28,30 @@ class LoggingInterceptor implements InterceptorContract {
   }
 }
 
-void findAll() async {
+Future<List<Transaction>> findAll() async {
   Client client = HttpClientWithInterceptor.build(
     interceptors: [
       LoggingInterceptor(),
     ],
   );
   final Response response = await client.get('${baseUrl}transactions');
-  
-  // final Response response = await get('${baseUrl}transactions');
-  // print(response.body);
+  final List<dynamic> decodedJson = jsonDecode(response.body);
+  final List<Transaction> transactions = [];
+  // final List<Transaction> transactions = List(); // deprecated
+  for (Map<String, dynamic> transactionJson in decodedJson) {
+    final Map<String, dynamic> contactJson = transactionJson['contact'];
+
+    final Transaction transaction = Transaction(
+      transactionJson['value'],
+      Contact(
+        0,
+        contactJson['name'],
+        contactJson['accountNumber'],
+      ),
+    );
+
+    transactions.add(transaction);
+  }
+  // print('decodedJson: $decodedJson');
+  return transactions;
 }

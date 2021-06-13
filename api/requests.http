@@ -1,9 +1,11 @@
 
 # Subir api
-#java -jar server.jar
+# java -jar server.jar
+
+# Espelhar ngrok
+# ngrok http 8080
 
 @url = http://localhost:8080/
-# @url = http://192.168.0.6:8080/
 
 ### Get Transactions
 GET {{url}}transactions
