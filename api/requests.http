@@ -3,7 +3,8 @@
 # java -jar server.jar
 
 # Espelhar ngrok
-# ngrok http 8080
+# navegar até a pasta Development
+# ./ngrok http 8080
 
 @url = http://localhost:8080/
 

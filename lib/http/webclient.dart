@@ -5,9 +5,7 @@ import 'package:bytebank/models/transaction.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 
-
-final String baseUrl = 'https://d23b6e76aca9.ngrok.io/';
-// final String baseUrl = 'http://localhost:8080/';
+final String baseUrl = 'https://95736cf9306c.ngrok.io/';
 
 class LoggingInterceptor implements InterceptorContract {
   @override
