@@ -5,7 +5,7 @@ import 'package:bytebank/models/transaction.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 
-final String baseUrl = 'https://95736cf9306c.ngrok.io/';
+final String baseUrl = 'https://87921442397d.ngrok.io/';
 
 class LoggingInterceptor implements InterceptorContract {
   @override
@@ -32,7 +32,8 @@ Future<List<Transaction>> findAll() async {
       LoggingInterceptor(),
     ],
   );
-  final Response response = await client.get('${baseUrl}transactions');
+  final Response response =
+      await client.get('${baseUrl}transactions').timeout(Duration(seconds: 10));
   final List<dynamic> decodedJson = jsonDecode(response.body);
   final List<Transaction> transactions = [];
   // final List<Transaction> transactions = List(); // deprecated
