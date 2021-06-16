@@ -26,12 +26,13 @@ class LoggingInterceptor implements InterceptorContract {
   }
 }
 
+Client client = HttpClientWithInterceptor.build(
+  interceptors: [
+    LoggingInterceptor(),
+  ],
+);
+
 Future<List<Transaction>> findAll() async {
-  Client client = HttpClientWithInterceptor.build(
-    interceptors: [
-      LoggingInterceptor(),
-    ],
-  );
   final Response response =
       await client.get('${baseUrl}transactions').timeout(Duration(seconds: 10));
   final List<dynamic> decodedJson = jsonDecode(response.body);
@@ -53,4 +54,34 @@ Future<List<Transaction>> findAll() async {
   }
   // print('decodedJson: $decodedJson');
   return transactions;
+}
+
+Future<Transaction> save(Transaction transaction) async {
+  final Map<String, dynamic> transactionMap = {
+    'value': transaction.value,
+    'contact': {
+      'name': transaction.contact.name,
+      'accountNumber': transaction.contact.accountNumber,
+    }
+  };
+
+  final String transactionJson = jsonEncode(transactionMap);
+
+  final Response response = await client.post('${baseUrl}transactions',
+      headers: {
+        'Content-Type': 'application/json',
+        'password': '1000',
+      },
+      body: transactionJson);
+
+  Map<String, dynamic> json = jsonDecode(response.body);
+  final Map<String, dynamic> contactJson = json['contact'];
+  return Transaction(
+    json['value'],
+    Contact(
+      0,
+      contactJson['name'],
+      contactJson['accountNumber'],
+    ),
+  );
 }
