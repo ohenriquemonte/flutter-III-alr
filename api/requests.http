@@ -6,7 +6,8 @@
 # navegar até a pasta Development
 # ./ngrok http 8080
 
-@url = http://localhost:8080/
+@url = http://localhost:8080/ 
+# @url = https://4c6669b08467.ngrok.io
 
 ### Get Transactions
 GET {{url}}transactions
